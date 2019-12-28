@@ -18,7 +18,12 @@ fn main() {
         let entry = entry.unwrap();
         let path = entry.path();
 
-        if fs::metadata(path).unwrap().is_dir() != true {
+        let is_directory = match fs::metadata(path) {
+            Ok(meta) => meta.is_dir(),
+            Err(_error) => false,
+        };
+
+        if is_directory != true {
             
             // Read the file.
             let contents = match fs::read_to_string(path) {
